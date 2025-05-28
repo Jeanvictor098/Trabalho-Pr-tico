@@ -1,2 +1,2 @@
-# Trabalho-Pr-tico
+# Trabalho-Prático
 Prontuário hospitalar
