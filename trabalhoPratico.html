@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Prontuário Hospitalar</title>
+    <link rel='stylesheet' href='trabalhoPratico.css'>
+    <script src='trabalhoPratico.js' defer></script>
+</head>
+<body>
+    <h1>Cadastro do Paciente</h1>
+
+    <img src ="https://img.freepik.com/vetores-premium/uma-ilustracao-de-desenho-animado-de-um-hospital-com-uma-cruz-nele_917506-478201.jpg?semt=ais_items_boosted&w=740">
+
+    <form id="formCadastro">
+        <input type="text" id="nome" placeholder="Nome completo" required>
+        <input type="date" id="dataNascimento" required>
+        <input type="text" id="cpf" placeholder="CPF (11 dígitos)" required>
+        <fieldset>
+            <legend>Sexo</legend>
+            <label><input type="radio" name="sexo" value="M" required> Masculino</label>
+            <label><input type="radio" name="sexo" value="F"> Feminino</label>
+            <label><input type="radio" name="sexo" value="Outro"> Outro</label>
+        </fieldset>
+        <textarea id="sintomas" placeholder="Sintomas" required></textarea>
+        <textarea id="diagnostico" placeholder="Diagnóstico" required></textarea>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <input type="text" id="campoBusca" placeholder="Buscar paciente por nome...">
+    <section id="listaPacientes"></section>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalInfo"></div>
+        </div>
+    </div>
+</body>
+</html>
