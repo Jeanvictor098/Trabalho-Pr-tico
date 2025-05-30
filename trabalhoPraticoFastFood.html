@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Pedidos Fast-Food</title>
+    <link rel="stylesheet" href="trabalhoPraticoFastFood.css">
+    <script src="trabalhoPraticoFastFood.js" defer></script>
+</head>
+<body>
+    <h1>Cadastro de Pedido</h1>
+
+    <img src="" alt="">
+
+    <form id="formPedido">
+        <input type="text" id="nomeCliente" placeholder="Nome do Cliente" required>
+        <input type="number" id="numeroPedido" placeholder="Número do Pedido" required>
+
+        <fieldset>
+            <legend>Itens do Pedido</legend>
+            <label><input type="checkbox" name="itens" value="Hambúrguer"> Hambúrguer</label>
+            <label><input type="checkbox" name="itens" value="Batata Frita"> Batata Frita</label>
+            <label><input type="checkbox" name="itens" value="Refrigerante"> Refrigerante</label>
+        </fieldset>
+
+        <textarea id="observacoes" placeholder="Observações"></textarea>
+
+        <label for="formaPagamento">Forma de Pagamento:</label>
+        <select id="formaPagamento">
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão">Cartão</option>
+            <option value="Pix">Pix</option>
+        </select>
+
+        <label for="statusPedido">Status do Pedido:</label>
+        <select id="statusPedido">
+            <option value="Pendente">Pendente</option>
+            <option value="Em preparo">Em preparo</option>
+            <option value="Pronto">Pronto</option>
+            <option value="Entregue">Entregue</option>
+        </select>
+
+        <button type="submit">Cadastrar Pedido</button>
+    </form>
+
+    <input type="text" id="campoBusca" placeholder="Buscar pedido por nome do cliente...">
+    <section id="listaPedidos"></section>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalInfo"></div>
+        </div>
+    </div>
+</body>
+</html>

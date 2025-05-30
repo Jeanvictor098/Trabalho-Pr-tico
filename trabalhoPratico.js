@@ -9,12 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalInfo = document.getElementById("modalInfo");
     const closeBtn = document.querySelector(".close");
 
-    // Função para validar CPF (11 números, sem letras)
     function validarCPF(cpf) {
         return /^\d{11}$/.test(cpf);
     }
 
-    // Função para calcular idade com base na data de nascimento
     function calcularIdade(dataNascimento) {
         const hoje = new Date();
         const nascimento = new Date(dataNascimento);
@@ -26,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return idade;
     }
 
-    // Cadastro de novo paciente
     form.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -59,13 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
         renderizarTabela();
     });
 
-    // Campo de busca por nome
     campoBusca.addEventListener("input", () => {
         termoBusca = campoBusca.value.trim().toLowerCase();
         renderizarTabela();
     });
 
-    // Renderiza tabela de pacientes
     function renderizarTabela() {
         listaPacientes.innerHTML = `<h2>Lista de Pacientes</h2>
             <button onclick="limparLista()">🗑 Limpar Lista</button>
@@ -105,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Exibir detalhes do paciente em um modal
     window.verDetalhes = (index) => {
         const paciente = pacientes[index];
 
@@ -120,11 +114,9 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.display = "block";
     };
 
-    // Fechar modal ao clicar no botão de fechar
     closeBtn.onclick = () => { modal.style.display = "none"; };
     window.onclick = (event) => { if (event.target === modal) modal.style.display = "none"; };
 
-    // Função para limpar a lista de pacientes
     window.limparLista = () => {
         if (confirm("Tem certeza que deseja excluir todos os pacientes?")) {
             pacientes = [];
@@ -137,18 +129,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.editarPaciente = (index) => {
         const paciente = pacientes[index];
-    
-        // Solicitar novos valores com prompt()
         const novoNome = prompt("Novo nome:", paciente.nome);
         const novaDataNascimento = prompt("Nova data de nascimento (AAAA-MM-DD):", paciente.dataNascimento);
         const novoSexo = prompt("Novo sexo (M/F/Outro):", paciente.sexo);
         const novosSintomas = prompt("Novos sintomas:", paciente.sintomas);
         const novoDiagnostico = prompt("Novo diagnóstico:", paciente.diagnostico);
     
-        // Verificar se os campos foram preenchidos antes de atualizar
         if (novoNome && novaDataNascimento && novoSexo && novosSintomas && novoDiagnostico) {
             pacientes[index] = {
-                ...paciente, // Mantém o CPF original
+                ...paciente, 
                 nome: novoNome,
                 dataNascimento: novaDataNascimento,
                 sexo: novoSexo,
@@ -156,10 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 diagnostico: novoDiagnostico
             };
     
-            // Atualizar no localStorage
             localStorage.setItem("pacientes", JSON.stringify(pacientes));
     
-            // Atualizar a tabela
             renderizarTabela();
             alert("Paciente atualizado com sucesso!");
         } else {
