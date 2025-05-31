@@ -14,41 +14,60 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function validarDataNasc(dataNascimento) {
-        const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-        if (!regex.test(dataNascimento)) {
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
             return false;
         }
 
-        const [dia, mes, ano] = dataNascimento.split("/").map(Number);
+        const [dia, mes, ano] = dataNascimento.split('/').map(Number);
         const data = new Date(ano, mes - 1, dia);
-    
-        return data.getFullYear() === ano && data.getMonth() + 1 === mes && data.getDate() === dia;
+
+        return (
+            data.getFullYear() === ano &&
+            data.getMonth() === mes - 1 &&
+            data.getDate() === dia
+        );
     }
 
-
     function calcularIdade(dataNascimento) {
+        const [dia, mes, ano] = dataNascimento.split('/').map(Number);
+        const nascimento = new Date(ano, mes - 1, dia);
         const hoje = new Date();
-        const nascimento = new Date(dataNascimento);
+
         let idade = hoje.getFullYear() - nascimento.getFullYear();
-        if (hoje.getMonth() < nascimento.getMonth() || 
-           (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate())) {
+        if (
+            hoje.getMonth() < nascimento.getMonth() || 
+            (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate())
+        ) {
             idade--;
         }
-        
+
         return idade;
     }
 
+    function formatarDataParaBrasileiro(dataISO) {
+        if (!dataISO) return "";
+        const [ano, mes, dia] = dataISO.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    function formatarDataParaISO(dataBR) {
+        if (!dataBR) return "";
+        const [dia, mes, ano] = dataBR.split("/");
+        return `${ano}-${mes}-${dia}`;
+    }
+
     form.addEventListener("submit", (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const nome = document.getElementById("nome").value.trim();
-        const dataNascimento = document.getElementById("dataNascimento").value;
+        const dataNascimentoISO = document.getElementById("dataNascimento").value;
+        const dataNascimento = formatarDataParaBrasileiro(dataNascimentoISO);
         const cpf = document.getElementById("cpf").value.trim();
         const sexo = document.querySelector('input[name="sexo"]:checked')?.value;
         const sintomas = document.getElementById("sintomas").value.trim();
         const diagnostico = document.getElementById("diagnostico").value.trim();
 
-        if (!nome || !dataNascimento || !cpf || !sexo || !sintomas || !diagnostico) {
+        if (!nome || !dataNascimentoISO || !cpf || !sexo || !sintomas || !diagnostico) {
             alert("Por favor, preencha todos os campos.");
             return;
         }
@@ -58,8 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (!validarDataNasc(dataNascimento)){
-            alert("Data inválida, digite uma data de até quatro digitos");
+        if (!validarDataNasc(dataNascimento)) {
+            alert("Data inválida");
             return;
         }
 
@@ -144,32 +163,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    document.addEventListener("DOMContentLoaded", renderizarTabela);
-
     window.editarPaciente = (index) => {
         const paciente = pacientes[index];
         const novoNome = prompt("Novo nome:", paciente.nome);
-        const novaDataNascimento = prompt("Nova data de nascimento (AAAA-MM-DD):", paciente.dataNascimento);
+        const novaDataISO = prompt("Nova data de nascimento (AAAA-MM-DD):", formatarDataParaISO(paciente.dataNascimento));
+        const novaDataNascimento = formatarDataParaBrasileiro(novaDataISO);
         const novoSexo = prompt("Novo sexo (M/F/Outro):", paciente.sexo);
         const novosSintomas = prompt("Novos sintomas:", paciente.sintomas);
         const novoDiagnostico = prompt("Novo diagnóstico:", paciente.diagnostico);
-    
-        if (novoNome && novaDataNascimento && novoSexo && novosSintomas && novoDiagnostico) {
+
+        if (
+            novoNome && novaDataNascimento && novoSexo &&
+            novosSintomas && novoDiagnostico && validarDataNasc(novaDataNascimento)
+        ) {
             pacientes[index] = {
-                ...paciente, 
+                ...paciente,
                 nome: novoNome,
                 dataNascimento: novaDataNascimento,
                 sexo: novoSexo,
                 sintomas: novosSintomas,
                 diagnostico: novoDiagnostico
             };
-    
+
             localStorage.setItem("pacientes", JSON.stringify(pacientes));
-    
             renderizarTabela();
             alert("Paciente atualizado com sucesso!");
         } else {
             alert("Edição cancelada ou campos inválidos.");
         }
     };
+
+    renderizarTabela();
 });
