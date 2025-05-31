@@ -13,6 +13,19 @@ document.addEventListener("DOMContentLoaded", () => {
         return /^\d{11}$/.test(cpf);
     }
 
+    function validarDataNasc(dataNascimento) {
+        const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+        if (!regex.test(dataNascimento)) {
+            return false;
+        }
+
+        const [dia, mes, ano] = dataNascimento.split("/").map(Number);
+        const data = new Date(ano, mes - 1, dia);
+    
+        return data.getFullYear() === ano && data.getMonth() + 1 === mes && data.getDate() === dia;
+    }
+
+
     function calcularIdade(dataNascimento) {
         const hoje = new Date();
         const nascimento = new Date(dataNascimento);
@@ -21,11 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
            (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate())) {
             idade--;
         }
+        
         return idade;
     }
 
     form.addEventListener("submit", (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
 
         const nome = document.getElementById("nome").value.trim();
         const dataNascimento = document.getElementById("dataNascimento").value;
@@ -41,6 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!validarCPF(cpf)) {
             alert("CPF inválido! Certifique-se de que contém apenas 11 números.");
+            return;
+        }
+
+        if (!validarDataNasc(dataNascimento)){
+            alert("Data inválida, digite uma data de até quatro digitos");
             return;
         }
 
