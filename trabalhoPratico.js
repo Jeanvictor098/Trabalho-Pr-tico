@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             data.getMonth() === mes - 1 &&
             data.getDate() === dia
         );
+        
     }
 
     function calcularIdade(dataNascimento) {
@@ -40,6 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
             idade--;
         }
+        /*if(idade < 0 || idade > 150){
+            alert("idade inválida");
+            return null;
+
+        }*/
 
         return idade;
     }
@@ -82,6 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const idade = calcularIdade(dataNascimento);
+        if (idade === null || idade  < 0 || idade > 150){
+            alert("Idade invalida");
+            return;
+        }
+
         if (pacientes.some(paciente => paciente.cpf === cpf)) {
             alert("Este CPF já está cadastrado! Verifique a lista de pacientes.");
             return;
@@ -114,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </table>`;
 
         const corpoTabela = document.getElementById("corpoTabela");
-        const pacientesFiltrados = pacientes.filter(p => p.nome.toLowerCase().includes(termoBusca));
+        const pacientesFiltrados = pacientes.filter(p => p.nome.toLowerCase().startsWith(termoBusca));
 
         if (pacientesFiltrados.length === 0) {
             corpoTabela.innerHTML = `<tr><td colspan="3">Nenhum paciente encontrado.</td></tr>`;
